@@ -212,9 +212,6 @@ smart_borders on
 client.focused          #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
 focus_follows_mouse yes
 
-workspace 11
-exec_always $term -e $SHELL -c "./.config/myfetch/treefetch; exec $SHELL"
-exec_always sh -c "pgrep -x autotiling-rs || autotiling-rs"
 
 bindsym $mod+Escape exec swaylock -f  -c 000000 --inside-color 505050 --inside-ver-color FFFFFF  --inside-clear-color 000000 --indicator-thickness 0 --text-ver-color FFFFFF
 
@@ -232,11 +229,14 @@ bindsym $mod+n exec $term -e nvim +startinsert
 bindsym $mod+e exec pcmanfm
 bindsym $mod+f fullscreen
 
+workspace 11
+exec_always sh -c "pgrep -x autotiling-rs || autotiling-rs"
+exec_always wezterm start --always-new-process -- $SHELL -c "sleep 0.69; ~/.config/myfetch/treefetch && exec bash"
 bindsym $mod+i bar mode toggle
 bar {
     position top
     	
-
+    mode hide
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     status_command while date +'%Y-%m-%d %X'; do sleep 1; done
