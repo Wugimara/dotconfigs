@@ -1,0 +1,212 @@
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Your preferred terminal emulator
+set $term wezterm
+# Your preferred application launcher
+
+### Output configuration
+#
+# Default wallpaper
+# output * bg /run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+#
+# To configure specific outputs, uncomment and modify the example below.
+# You can get output names using: `swaymsg -t get_outputs`
+# Example:
+# output HDMI-A-1 resolution 1920x1080 position 1920,0
+
+### Idle configuration
+#
+# swayidle manages idle timeouts for screen locking, power saving, etc.
+# Uncomment and customize to enable swayidle.
+# Example:
+exec swayidle -w \
+      timeout 300 'swaylock -f  -c 000000 --inside-color 505050 --inside-ver-color FFFFFF  --inside-clear-color 000000 --indicator-thickness 0 --text-ver-color FFFFFF' \
+      timeout 330 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+      before-sleep 'swaylock -f  -c 000000 --inside-color 505050 --inside-ver-color FFFFFF  --inside-clear-color 000000 --indicator-thickness 0 --text-ver-color FFFFFF' 
+
+for_window [app_id="^.*"] inhibit_idle fullscreen
+#
+# This example will:
+# - Lock the screen after 300 seconds of inactivity (5 minutes) with swaylock.
+# - Turn off displays after 600 seconds of inactivity (10 minutes).
+# - Turn displays back on upon resume.
+# - Lock the screen before sleep.
+
+### Input configuration
+#
+# Configure input devices, like touchpads, keyboards, etc.
+# Uncomment and customize the example below for touchpad settings.
+# You can get input device names using: `swaymsg -t get_inputs`
+# Read `man 5 sway-input` for more information.
+# Example:
+# input "2:14:SynPS/2_Synaptics_TouchPad" {
+#     dwt enabled
+#     tap enabled
+#     natural_scroll enabled
+#     middle_emulation enabled
+# }
+input type:touchpad {
+    tap enabled
+    dwt enabled
+}
+
+### Key bindings
+#
+# This section defines keybindings for various Sway actions.
+# Read `man 5 sway-input` for more information on keybindings.
+
+# --- Basic actions ---
+# Start a terminal
+bindsym $mod+Return exec $term
+# Kill focused window
+bindsym $mod+Shift+q kill
+# Start application launcher (Rofi)
+bindsym $mod+d exec $menu
+# Reload Sway configuration
+bindsym $mod+Shift+c reload
+# Exit Sway (logout)
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+# --- Moving focus ---
+# Focus with Mod+Ctrl+Shift+Arrow
+# bindsym $mod+Ctrl+Left focus left
+# bindsym $mod+Ctrl+Down focus down
+# bindsym $mod+Ctrl+Up focus up
+# bindsym $mod+Ctrl+Right focus right
+bindsym $mod+Tab+Left focus left
+bindsym $mod+Tab+Down focus down
+bindsym $mod+Tab+Up focus up
+bindsym $mod+Tab+Right focus right
+## 
+# --- Moving windows ---
+# Move windows with Shift + vim-style keys or arrow keys
+bindsym $mod+Left move left
+bindsym $mod+Down move down
+bindsym $mod+Up move up
+bindsym $mod+Right move right
+
+### Workspaces
+#
+# Define workspace keybindings. By default, workspaces are numbered 1-10.
+# You can also name workspaces if you prefer.
+# Example: workspace "code" number 1
+
+# Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+### Layout
+#
+# Configure window layouts and tiling behavior.
+
+# Split orientation
+#bindsym $mod+b splith # Split horizontally
+#bindsym $mod+v splitv # Split vertically
+#bindsym $mod+e layout toggle split # Toggle split orientation
+
+# Maximize/Restore
+bindsym $mod+F11 move container to workspace number 99, workspace number 99
+bindsym Mod1+Return move container to workspace number 99, workspace number 99
+
+bindsym $mod+Escape move container to workspace back_and_forth, workspace back_and_forth
+
+
+### Scratchpad
+#
+# The scratchpad is a hidden workspace for temporary windows.
+
+# Move focused window to scratchpad
+bindsym $mod+Shift+minus move scratchpad
+# Show/hide scratchpad window
+bindsym $mod+minus scratchpad show
+
+### Resize Mode
+#
+# Enter resize mode with Mod+r, then use vim keys or arrows to resize windows.
+# Press Enter or Escape to exit resize mode.
+# mode "resize" {
+#     # bindsym $left resize shrink width 10px
+#     # bindsym $down resize grow height 10px
+#     # bindsym $up resize shrink height 10px
+#     # bindsym $right resize grow width 10px
+#     bindsym Left resize shrink width 10px
+#     bindsym Down resize grow height 10px
+#     bindsym Up resize shrink height 10px
+#     bindsym Right resize grow width 10px
+# 
+#     bindsym Return mode "default"  # Exit resize mode on Enter
+#     bindsym Escape mode "default"  # Exit resize mode on Escape
+# }
+# bindsym $mod+r mode "resize" # Enter resize mode
+
+### Utilities
+#
+# Keybindings for system utilities and scripts.
+
+# Volume control (PulseAudio)
+bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+# Brightness control (brightnessctl)
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym $mod+XF86MonBrightnessDown exec brightnessctl s 1
+bindsym $mod+XF86MonBrightnessUp exec brightnessctl s 100%
+
+# Screenshot (grim)
+bindsym Print exec grim
+bindsym $mod+Shift+Print exec grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png
+bindsym $mod+Ctrl+Print exec grim -g "$(slurp)" - | wl-copy
+
+### Some Ricing
+default_border pixel 1
+smart_borders on
+client.focused          #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
+focus_follows_mouse no
+exec_always autotiling
+exec_always wezterm -e sh -c "fastfetch; exec $SHELL"
+
+bindsym $mod+l exec swaylock -f  -c 000000 --inside-color 505050 --inside-ver-color FFFFFF  --inside-clear-color 000000 --indicator-thickness 0 --text-ver-color FFFFFF
+
+seat * hide_cursor when-typing enable
+seat * hide_cursor 8000
+
+
+# Still solving do not uncomment
+bindsym $mod+h exec ~/voice-typing/start_voice.sh
+bindsym --release $mod+h exec ~/voice-typing/stop_voice.sh
+bindcode --release 133 exec pkill rofi || rofi -show drun
+bindsym $mod+a exec rofi -show run
+bindsym $mod+n exec wezterm -e nvim +startinsert
+bindsym $mod+e exec pcmanfm
+
+
+### Include External Configurations
+#
+# Include additional configuration files from the specified directory.
+# This is useful for modularizing your config.
+# include /etc/sway/config.d/

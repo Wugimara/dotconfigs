@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+height=$(tput lines)
+open_height=$(( $height-13 ))
+life=$(( ($open_height + 2) * 5/4 ))
+
+cbonsai -p -L $life -b 2
+width=$(tput cols)
+fastfetch -c ~/.config/myfetch/config.jsonc --pipe false | while IFS= read -r line; do
+  stripped=$(echo "$line" | sed 's/\x1B\[[0-9;]*m//g')
+  len=${#stripped}
+  pad=$(( (width - len) / 2 ))
+  printf "%${pad}s%s\n" '' "$line"
+done
+printf '\e[0m'  # Reset colors only

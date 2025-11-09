@@ -1,0 +1,114 @@
+/* Rofi OLED-Dark Theme */
+configuration {
+    terminal: "wezterm";
+    modi: "drun,run,window";
+    font: "FontAwesome 12";
+    show-icons: true;
+    icon-theme: "Papirus-Dark";
+    display-drun: " Apps";
+    display-run: " Run";
+    display-window: " Windows";
+    drun-display-format: "{name}";
+    disable-history: false;
+    sidebar-mode: false;
+}
+
+/* Global properties */
+* {
+    /* Colors */
+    background: #000000; /* Pure black for OLED */
+    foreground: #F5F6F5; /* Light gray for text */
+    accent: #00D4FF; /* Neon blue accent */
+    urgent: #FF5555; /* Red for urgent */
+    selected: #2E2E2E; /* Dark gray for selected items */
+    transparent: rgba(0, 0, 0, 0); /* Fully transparent */
+
+    /* Spacing and padding */
+    padding: 10px;
+    margin: 0px;
+    border: 0px;
+    border-radius: 8px;
+}
+
+/* Main window */
+window {
+    transparency: "real";
+    background-color: @background;
+    text-color: @foreground;
+    border: 2px;
+    border-color: @accent;
+    border-radius: 12px;
+    width: 600px;
+    location: center;
+    anchor: center;
+}
+
+/* Main box */
+mainbox {
+    background-color: @background;
+    border: 0px;
+    padding: 10px;
+}
+
+/* Input bar */
+inputbar {
+    spacing: 10px;
+    text-color: @foreground;
+    background-color: rgba(30, 30, 30, 0.8); /* Subtle transparency */
+    border-radius: 8px;
+    padding: 8px;
+}
+
+/* Prompt */
+prompt {
+    text-color: @accent;
+}
+
+/* Entry */
+entry {
+    text-color: @foreground;
+    placeholder: "Search...";
+    placeholder-color: rgba(245, 246, 245, 1);
+}
+
+/* Listview */
+listview {
+    spacing: 5px;
+    dynamic: true;
+    scrollbar: false;
+}
+
+/* Elements */
+element {
+    background-color: @transparent;
+    text-color: @foreground;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+/* Selected element */
+element.selected {
+    background-color: @selected;
+    text-color: @accent;
+    border: 1px;
+    border-color: @accent;
+}
+
+/* Urgent element */
+element.urgent {
+    text-color: @urgent;
+}
+
+/* Button */
+button {
+    background-color: @transparent;
+    text-color: @foreground;
+}
+
+/* Message */
+message {
+    background-color: @background;
+    text-color: @foreground;
+    border-radius: 8px;
+    padding: 8px;
+}

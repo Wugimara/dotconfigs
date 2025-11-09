@@ -1,0 +1,254 @@
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Home row direction keys, like vim
+set $Left h
+set $Down j
+set $Up k
+set $Right l
+# Your preferred terminal emulator
+set $term wezterm
+# Your preferred application launcher
+
+### Output configuration
+#
+# Default wallpaper
+# output * bg /run/current-system/sw/share/backgrounds/sway/scripts/Sway_Wallpaper_Blue_1920x1080.png fill
+#
+# To configure specific outputs, uncomment and modify the example below.
+# You can get output names using: `swaymsg -t get_outputs`
+# Example:
+# output HDMI-A-1 resolution 1920x1080 position 1920,0
+output eDP-1 mode 1920x1200@47.960Hz
+### Idle configuration
+
+exec dbus-update-activation-environment WAYLAND_DISPLAY 
+
+# swayidle manages idle timeouts for screen locking, power saving, etc.
+# Uncomment and customize to enable swayidle.
+# Example:
+exec swayidle -w \
+      timeout 300 'swaylock -f  -c 000000 --inside-color 505050 --inside-ver-color FFFFFF  --inside-clear-color 000000 --indicator-thickness 0 --text-ver-color FFFFFF' \
+      timeout 330 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+      before-sleep 'swaylock -f  -c 000000 --inside-color 505050 --inside-ver-color FFFFFF  --inside-clear-color 000000 --indicator-thickness 0 --text-ver-color FFFFFF' 
+
+for_window [app_id="^.*"] inhibit_idle fullscreen
+#
+# This example will:
+# - Lock the screen after 300 seconds of inactivity (5 minutes) with swaylock.
+# - Turn off displays after 600 seconds of inactivity (10 minutes).
+# - Turn displays back on upon resume.
+# - Lock the screen before sleep.
+
+### Input configuration
+#
+# Configure input devices, like touchpads, keyboards, etc.
+# Uncomment and customize the example below for touchpad settings.
+# You can get input device names using: `swaymsg -t get_inputs`
+# Read `man 5 sway-input` for more information.
+# Example:
+# input "2:14:SynPS/2_Synaptics_TouchPad" {
+#     dwt enabled
+#     tap enabled
+#     natural_scroll enabled
+#     middle_emulation enabled
+# }
+input type:touchpad {
+    tap enabled
+    dwt enabled
+    accel_profile "flat"
+    pointer_accel .25
+    drag enabled
+    # dwt_timeout 500
+}
+
+### Key bindings
+#
+# This section defines keybindings for various Sway actions.
+# Read `man 5 sway-input` for more information on keybindings.
+
+# --- Basic actions ---
+# Start a terminal
+bindsym $mod+Return exec $term
+# Kill focused window
+bindsym $mod+Shift+q kill
+# Start application launcher (Rofi)
+bindsym $mod+d exec $menu
+# Reload Sway configuration
+bindsym $mod+Shift+c reload
+# Exit Sway (logout)
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+# --- Moving focus ---
+# Focus with Mod+Ctrl+Shift+Arrow
+# bindsym $mod+Ctrl+Left focus left
+# bindsym $mod+Ctrl+Down focus down
+# bindsym $mod+Ctrl+Up focus up
+# bindsym $mod+Ctrl+Right focus right
+bindsym $mod+Tab+Left focus left
+bindsym $mod+Tab+Down focus down
+bindsym $mod+Tab+Up focus up
+bindsym $mod+Tab+Right focus right
+bindsym $mod+Tab+$Left focus left
+bindsym $mod+Tab+$Down focus down
+bindsym $mod+Tab+$Up focus up
+bindsym $mod+Tab+$Right focus right
+
+# --- Moving windows ---
+# Move windows with Shift + arrow keys
+bindsym $mod+Left move left
+bindsym $mod+Down move down
+bindsym $mod+Up move up
+bindsym $mod+Right move right
+bindsym $mod+$Left move left
+bindsym $mod+$Down move down
+bindsym $mod+$Up move up
+bindsym $mod+$Right move right
+
+# --- Resizing windows ---
+# Resize focused window with Mod+Ctrl+Arrow
+bindsym $mod+Ctrl+Left resize shrink width 10px
+bindsym $mod+Ctrl+Right resize grow width 10px
+bindsym $mod+Ctrl+Up resize shrink height 10px
+bindsym $mod+Ctrl+Down resize grow height 10px
+bindsym $mod+Ctrl+$Left resize shrink width 10px
+bindsym $mod+Ctrl+$Right resize grow width 10px
+bindsym $mod+Ctrl+$Up resize shrink height 10px
+bindsym $mod+Ctrl+$Down resize grow height 10px
+
+### Workspaces
+ 
+set $workcolumn 1
+set $row 1
+
+# === MOD + NUM: Set column + go to $$workcolumn$$row + normalize ===
+bindsym $mod+1 set $$workcolumn 1; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+bindsym $mod+2 set $$workcolumn 2; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+bindsym $mod+3 set $$workcolumn 3; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+bindsym $mod+4 set $$workcolumn 4; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+bindsym $mod+5 set $$workcolumn 5; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+bindsym $mod+6 set $$workcolumn 6; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+bindsym $mod+7 set $$workcolumn 7; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+bindsym $mod+8 set $$workcolumn 8; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+bindsym $mod+9 set $$workcolumn 9; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+# bindsym $mod+0 set $$workcolumn 10; workspace $$workcolumn$$row; exec  ~/.config/sway/scripts/normalize-grid.sh
+
+# === SWIPES (only source of truth) ===
+bindgesture swipe:3:left  exec  "~/.config/sway/scripts/focus-next-col.sh  && ~/.config/sway/scripts/normalize-grid.sh"
+bindgesture swipe:3:right exec  "~/.config/sway/scripts/focus-prev-col.sh && ~/.config/sway/scripts/normalize-grid.sh"
+bindgesture swipe:3:up    exec  "~/.config/sway/scripts/focus-next-row.sh    && ~/.config/sway/scripts/normalize-grid.sh"
+bindgesture swipe:3:down  exec  "~/.config/sway/scripts/focus-prev-row.sh  && ~/.config/sway/scripts/normalize-grid.sh"
+
+# Move container to previous/next workspace
+bindsym $mod+Shift+Up     exec ~/.config/sway/scripts/send-prev-row.sh
+bindsym $mod+Shift+Down   exec ~/.config/sway/scripts/send-next-row.sh
+bindsym $mod+Shift+left   exec ~/.config/sway/scripts/send-prev-col.sh
+bindsym $mod+Shift+right   exec ~/.config/sway/scripts/send-next-col.sh
+bindsym $mod+Shift+$Up     exec ~/.config/sway/scripts/send-prev-row.sh
+bindsym $mod+Shift+$Down   exec ~/.config/sway/scripts/send-next-row.sh
+bindsym $mod+Shift+$Left   exec ~/.config/sway/scripts/send-prev-col.sh
+bindsym $mod+Shift+$Right   exec ~/.config/sway/scripts/send-next-col.sh
+
+bindgesture swipe:4:up    exec ~/.config/sway/scripts/send-prev-row.sh
+bindgesture swipe:4:down  exec ~/.config/sway/scripts/send-next-row.sh
+bindgesture swipe:4:left  exec ~/.config/sway/scripts/send-prev-col.sh
+bindgesture swipe:4:right exec ~/.config/sway/scripts/send-next-col.sh
+
+bindgesture pinch:4:inward kill
+bindgesture pinch:4:outward exec pkill rofi || rofi -show drun
+bindgesture pinch:3 fullscreen
+
+# Grid nav: Super + Alt + direction
+bindsym $mod+Mod1+Left exec ~/.config/sway/scripts/focus-prev-col.sh
+bindsym $mod+Mod1+Right exec ~/.config/sway/scripts/focus-next-col.sh
+bindsym $mod+Mod1+Up    exec ~/.config/sway/scripts/focus-prev-row.sh
+bindsym $mod+Mod1+Down  exec ~/.config/sway/scripts/focus-next-row.sh
+bindsym $mod+Mod1+$Left exec ~/.config/sway/scripts/focus-prev-col.sh
+bindsym $mod+Mod1+$Right exec ~/.config/sway/scripts/focus-next-col.sh
+bindsym $mod+Mod1+$Up    exec ~/.config/sway/scripts/focus-prev-row.sh
+bindsym $mod+Mod1+$Down  exec ~/.config/sway/scripts/focus-next-row.sh
+### Layout
+#
+# Configure window layouts and tiling behavior.
+
+# Split orientation
+#bindsym $mod+b splith # Split horizontally
+#bindsym $mod+v splitv # Split vertically
+#bindsym $mod+e layout toggle split # Toggle split orientation
+
+# Maximize/Restore
+
+### Utilities
+#
+# Keybindings for system utilities and scripts.
+
+# Volume control (PulseAudio)
+bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+# Brightness control (brightnessctl)
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym $mod+XF86MonBrightnessDown exec brightnessctl s 1
+bindsym $mod+XF86MonBrightnessUp exec brightnessctl s 100%
+
+# Screenshot (grim)
+bindsym Print exec grim
+bindsym $mod+Shift+Print exec grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png
+bindsym $mod+Ctrl+Print exec grim -g "$(slurp)" - | wl-copy
+
+#    Print { screenshot; }
+#    Ctrl+Print { screenshot-screen; }
+#    Alt+Print { screenshot-window; }
+
+
+
+### Some Ricing
+default_border pixel 1
+smart_borders on
+client.focused          #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
+focus_follows_mouse yes
+
+workspace 11
+exec_always $term -e $SHELL -c "./.config/myfetch/treefetch; exec $SHELL"
+exec_always sh -c "pgrep -x autotiling-rs || autotiling-rs"
+
+bindsym $mod+Escape exec swaylock -f  -c 000000 --inside-color 505050 --inside-ver-color FFFFFF  --inside-clear-color 000000 --indicator-thickness 0 --text-ver-color FFFFFF
+
+# seat seat0 xcursor_theme Adiwaita 24
+seat * hide_cursor when-typing enable
+seat * hide_cursor 8000
+
+bindcode --release 133 exec pkill rofi || rofi -show drun
+bindsym $mod+Insert exec ~/voice-typing/start_voice.sh
+bindsym --release $mod+Insert exec ~/voice-typing/stop_voice.sh
+
+bindsym $mod+a exec rofi -show run
+bindsym $mod+b exec brave --password-store=basic
+bindsym $mod+n exec $term -e nvim +startinsert
+bindsym $mod+e exec pcmanfm
+bindsym $mod+f fullscreen
+
+bindsym $mod+i bar mode toggle
+bar {
+    position top
+    	
+
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+
+    colors {
+        statusline #ffffff
+        background #000000
+        inactive_workspace #32323200 #32323200 #5c5c5c
+    }
+}
+### Include External Configurations
+#
+# Include additional configuration files from the specified directory.
+# This is useful for modularizing your config.
+# include /etc/sway/scripts/config.d/
