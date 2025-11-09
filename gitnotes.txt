@@ -1,0 +1,34 @@
+Here’s your updated backup checklist for **each new project** (SSH set up):
+
+1. `cd /path/to/project`  
+2. Create `.gitignore` in root (e.g., `nano .gitignore`):  
+   ```
+   logs/
+   *.log
+   __pycache__/
+   *.tmp
+   ```  
+   Save/exit.  
+3. `git init`  
+4. `git add .`  
+5. `git commit -m "Initial backup"`  
+6. On GitHub: **New repo** (empty, name it, **no README**)  
+7. `git remote add origin git@github.com:Wugimara/REPO-NAME.git`  
+8. `git branch -M main`  
+9. `git push -u origin main`  
+
+If repo **has** README: replace 9 with  
+`git pull origin main --allow-unrelated-histories` → `git push -u origin main`
+
+Here’s your **restore checklist** (SSH set up):
+
+1. `mkdir ~/restore && cd ~/restore`  
+2. `git clone git@github.com:Wugimara/REPO-NAME.git`  
+3. Done—files in `REPO-NAME/` folder.
+
+For **all repos**:  
+`gh repo list Wugimara --limit 100 | cut -f1 | xargs -L1 git clone git@github.com:`
+
+(Install `gh` CLI if needed: `nix-env -iA nixpkgs.gh`.)
+
+Fresh rice, anytime! 🚀
