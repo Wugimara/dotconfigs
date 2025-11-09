@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 height=$(tput lines)
-open_height=$(( $height-13 ))
-life=$(( ($open_height + 2) * 5/4 ))
+open_height=$(( height - 13 ))
+life=$(( (open_height + 2) * 5/4 ))
 
-cbonsai -p -L $life -b 2
+# Choose base: -b 2 (small) if life < 35, else -b 1 (wide)
+if (( life < 35 )); then
+  base=2
+else
+  base=1
+fi
+
+cbonsai -p -L "$life" -b "$base"
+
 width=$(tput cols)
 fastfetch -c ~/.config/myfetch/config.jsonc --pipe false | while IFS= read -r line; do
   stripped=$(echo "$line" | sed 's/\x1B\[[0-9;]*m//g')
@@ -11,4 +19,5 @@ fastfetch -c ~/.config/myfetch/config.jsonc --pipe false | while IFS= read -r li
   pad=$(( (width - len) / 2 ))
   printf "%${pad}s%s\n" '' "$line"
 done
-printf '\e[0m'  # Reset colors only
+
+printf '\e[0m'
